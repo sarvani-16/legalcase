@@ -1,0 +1,3 @@
+caseId,title,yourParty,oppositionParty,yourLawyer,oppositionLawyer,judge,severity,hearingSlot,judgment,yourPresent,oppPresent
+23,theft,jon,don,j,k,l,9,85,Pending,true,true
+1256,theft,don,hon,gaw,jaw,jai ,5,63,Pending,true,false
