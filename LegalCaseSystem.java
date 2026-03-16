@@ -7,96 +7,74 @@ public class LegalCaseSystem {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        CourtManager manager = new CourtManager();
+        CourtManager cm = new CourtManager();
 
-        int choice;
+        System.out.println("===== COURT CASE SYSTEM =====");
+        System.out.println("1. Admin Login");
+        System.out.println("2. User Login");
 
-        do {
-            System.out.println("\n===== LEGAL CASE SYSTEM =====");
-            System.out.println("1. Add Case");
-            System.out.println("2. View All Cases");
-            System.out.println("3. Assign Hearing Slot");
-            System.out.println("4. Mark Attendance");
-            System.out.println("0. Exit");
+        int role = sc.nextInt();
+        sc.nextLine();
 
-            System.out.print("Enter Choice: ");
-            choice = sc.nextInt();
-            sc.nextLine();
+        System.out.print("Username: ");
+        String u = sc.nextLine();
 
-            switch (choice) {
+        System.out.print("Password: ");
+        String p = sc.nextLine();
 
-                case 1:
+        if (role == 1 && AuthManager.adminLogin(u, p)) {
 
-                    System.out.print("Enter Case ID: ");
-                    String caseId = sc.nextLine();
+            int ch;
 
-                    System.out.print("Enter Title: ");
-                    String title = sc.nextLine();
+            do {
+                System.out.println("\n--- ADMIN MENU ---");
+                System.out.println("1 Add Case");
+                System.out.println("2 View Cases");
+                System.out.println("3 Update Case");
+                System.out.println("4 Search Case");
+                System.out.println("5 Approve Requests");
+                System.out.println("0 Exit");
 
-                    System.out.print("Enter Party Name: ");
-                    String yourParty = sc.nextLine();
+                ch = sc.nextInt();
+                sc.nextLine();
 
-                    System.out.print("Enter Opposition Party Name: ");
-                    String oppParty = sc.nextLine();
+                switch (ch) {
+                    case 1 -> cm.addCase(sc);
+                    case 2 -> cm.viewCases();
+                    case 3 -> cm.updateCase(sc);
+                    case 4 -> cm.searchCase(sc);
+                    case 5 -> cm.approveRequests();
+                }
 
-                    System.out.print("Enter Lawyer Name: ");
-                    String yourLawyer = sc.nextLine();
+            } while (ch != 0);
+        }
 
-                    System.out.print("Enter Opposition Lawyer Name: ");
-                    String oppLawyer = sc.nextLine();
+        else if (role == 2 && AuthManager.userLogin(u, p)) {
 
-                    System.out.print("Enter Judge Name: ");
-                    String judge = sc.nextLine();
+            int ch;
 
-                    System.out.print("Enter Severity (1-10): ");
-                    int severity = sc.nextInt();
-                    sc.nextLine();
+            do {
+                System.out.println("\n--- USER MENU ---");
+                System.out.println("1 View Cases");
+                System.out.println("2 Search Case");
+                System.out.println("3 Request New Case");
+                System.out.println("0 Exit");
 
-                    CaseRecord newCase =
-                            new CaseRecord(caseId, title,
-                                    yourParty, oppParty,
-                                    yourLawyer, oppLawyer,
-                                    judge, severity);
+                ch = sc.nextInt();
+                sc.nextLine();
 
-                    manager.addCase(newCase);
-                    break;
+                switch (ch) {
+                    case 1 -> cm.viewCases();
+                    case 2 -> cm.searchCase(sc);
+                    case 3 -> cm.requestCase(sc);
+                }
 
-                case 2:
-                    manager.viewAllCases();
-                    break;
+            } while (ch != 0);
+        }
 
-                case 3:
-                    System.out.print("Enter Case ID: ");
-                    String id = sc.nextLine();
-                    System.out.print("Enter Slot Number: ");
-                    int slot = sc.nextInt();
-                    sc.nextLine();
-                    manager.assignHearing(id, slot);
-                    break;
-
-                case 4:
-                    System.out.print("Enter Case ID: ");
-                    String cid = sc.nextLine();
-
-                    System.out.print("Is Your Party Present? (true/false): ");
-                    boolean your = sc.nextBoolean();
-
-                    System.out.print("Is Opposition Present? (true/false): ");
-                    boolean opp = sc.nextBoolean();
-                    sc.nextLine();
-
-                    manager.markAttendance(cid, your, opp);
-                    break;
-
-                case 0:
-                    System.out.println("Exiting...");
-                    break;
-
-                default:
-                    System.out.println("Invalid Choice");
-            }
-
-        } while (choice != 0);
+        else {
+            System.out.println("Login Failed.");
+        }
 
         sc.close();
     }
